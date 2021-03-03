@@ -32,11 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class EquipmentControllerTest {
 
-    private static final String BEER_API_URL_PATH = "/api/v1/beers";
-    private static final long VALID_BEER_ID = 1L;
-    private static final long INVALID_BEER_ID = 2l;
-    private static final String BEER_API_SUBPATH_INCREMENT_URL = "/increment";
-    private static final String BEER_API_SUBPATH_DECREMENT_URL = "/decrement";
+    private static final String EQUIPMENT_API_URL_PATH = "/api/v1/equipments";
+    private static final long VALID_EQUIPMENT_ID = 1L;
+    private static final long INVALID_EQUIPMENT_ID = 2l;
+    private static final String EQUIPMENT_API_SUBPATH_INCREMENT_URL = "/increment";
+    private static final String EQUIPMENT_API_SUBPATH_DECREMENT_URL = "/decrement";
 
     private MockMvc mockMvc;
 
@@ -44,30 +44,30 @@ public class EquipmentControllerTest {
     private EquipmentService equipmentService;
 
     @InjectMocks
-    private EquipmentController beerController;
+    private EquipmentController equipmentController;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(beerController)
+        mockMvc = MockMvcBuilders.standaloneSetup(equipmentController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setViewResolvers((s, locale) -> new MappingJackson2JsonView())
                 .build();
     }
 
     @Test
-    void whenPOSTIsCalledThenABeerIsCreated() throws Exception {
+    void whenPOSTIsCalledThenAEquipmentIsCreated() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         // when
-        when(equipmentService.createBeer(equipmentDTO)).thenReturn(equipmentDTO);
+        when(equipmentService.createEquipment(equipmentDTO)).thenReturn(equipmentDTO);
 
         // then
-        mockMvc.perform(post(BEER_API_URL_PATH)
+        mockMvc.perform(post(EQUIPMENT_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(equipmentDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is(equipmentDTO.getName())))
+                .andExpect(jsonPath("$.np", is(equipmentDTO.getNp())))
                 .andExpect(jsonPath("$.brand", is(equipmentDTO.getBrand())))
                 .andExpect(jsonPath("$.type", is(equipmentDTO.getType().toString())));
     }
@@ -75,11 +75,11 @@ public class EquipmentControllerTest {
     @Test
     void whenPOSTIsCalledWithoutRequiredFieldThenAnErrorIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
         equipmentDTO.setBrand(null);
 
         // then
-        mockMvc.perform(post(BEER_API_URL_PATH)
+        mockMvc.perform(post(EQUIPMENT_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(equipmentDTO)))
                 .andExpect(status().isBadRequest());
@@ -88,16 +88,16 @@ public class EquipmentControllerTest {
     @Test
     void whenGETIsCalledWithValidNameThenOkStatusIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         //when
-        when(equipmentService.findByName(equipmentDTO.getName())).thenReturn(equipmentDTO);
+        when(equipmentService.findByNp(equipmentDTO.getNp())).thenReturn(equipmentDTO);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH + "/" + equipmentDTO.getName())
+        mockMvc.perform(MockMvcRequestBuilders.get(EQUIPMENT_API_URL_PATH + "/" + equipmentDTO.getNp())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(equipmentDTO.getName())))
+                .andExpect(jsonPath("$.name", is(equipmentDTO.getNp())))
                 .andExpect(jsonPath("$.brand", is(equipmentDTO.getBrand())))
                 .andExpect(jsonPath("$.type", is(equipmentDTO.getType().toString())));
     }
@@ -105,44 +105,44 @@ public class EquipmentControllerTest {
     @Test
     void whenGETIsCalledWithoutRegisteredNameThenNotFoundStatusIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         //when
-        when(equipmentService.findByName(equipmentDTO.getName())).thenThrow(EquipmentNotFoundException.class);
+        when(equipmentService.findByNp(equipmentDTO.getNp())).thenThrow(EquipmentNotFoundException.class);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH + "/" + equipmentDTO.getName())
+        mockMvc.perform(MockMvcRequestBuilders.get(EQUIPMENT_API_URL_PATH + "/" + equipmentDTO.getNp())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void whenGETListWithBeersIsCalledThenOkStatusIsReturned() throws Exception {
+    void whenGETListWithEquipmentsIsCalledThenOkStatusIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         //when
         when(equipmentService.listAll()).thenReturn(Collections.singletonList(equipmentDTO));
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH)
+        mockMvc.perform(MockMvcRequestBuilders.get(EQUIPMENT_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is(equipmentDTO.getName())))
+                .andExpect(jsonPath("$[0].name", is(equipmentDTO.getNp())))
                 .andExpect(jsonPath("$[0].brand", is(equipmentDTO.getBrand())))
                 .andExpect(jsonPath("$[0].type", is(equipmentDTO.getType().toString())));
     }
 
     @Test
-    void whenGETListWithoutBeersIsCalledThenOkStatusIsReturned() throws Exception {
+    void whenGETListWithoutEquipmentsIsCalledThenOkStatusIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         //when
         when(equipmentService.listAll()).thenReturn(Collections.singletonList(equipmentDTO));
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH)
+        mockMvc.perform(MockMvcRequestBuilders.get(EQUIPMENT_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -150,13 +150,13 @@ public class EquipmentControllerTest {
     @Test
     void whenDELETEIsCalledWithValidIdThenNoContentStatusIsReturned() throws Exception {
         // given
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
+        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toEquipmentDTO();
 
         //when
         doNothing().when(equipmentService).deleteById(equipmentDTO.getId());
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.delete(BEER_API_URL_PATH + "/" + equipmentDTO.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete(EQUIPMENT_API_URL_PATH + "/" + equipmentDTO.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
@@ -164,109 +164,11 @@ public class EquipmentControllerTest {
     @Test
     void whenDELETEIsCalledWithInvalidIdThenNotFoundStatusIsReturned() throws Exception {
         //when
-        doThrow(EquipmentNotFoundException.class).when(equipmentService).deleteById(INVALID_BEER_ID);
+        doThrow(EquipmentNotFoundException.class).when(equipmentService).deleteById(INVALID_EQUIPMENT_ID);
 
         // then
-        mockMvc.perform(MockMvcRequestBuilders.delete(BEER_API_URL_PATH + "/" + INVALID_BEER_ID)
+        mockMvc.perform(MockMvcRequestBuilders.delete(EQUIPMENT_API_URL_PATH + "/" + INVALID_EQUIPMENT_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
-
-    @Test
-    void whenPATCHIsCalledToIncrementDiscountThenOKstatusIsReturned() throws Exception {
-        QuantityDTO quantityDTO = QuantityDTO.builder()
-                .quantity(10)
-                .build();
-
-        EquipmentDTO equipmentDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
-        equipmentDTO.setQuantity(equipmentDTO.getQuantity() + quantityDTO.getQuantity());
-
-        when(equipmentService.increment(VALID_BEER_ID, quantityDTO.getQuantity())).thenReturn(equipmentDTO);
-
-        mockMvc.perform(MockMvcRequestBuilders.patch(BEER_API_URL_PATH + "/" + VALID_BEER_ID + BEER_API_SUBPATH_INCREMENT_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(quantityDTO))).andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(equipmentDTO.getName())))
-                .andExpect(jsonPath("$.brand", is(equipmentDTO.getBrand())))
-                .andExpect(jsonPath("$.type", is(equipmentDTO.getType().toString())))
-                .andExpect(jsonPath("$.quantity", is(equipmentDTO.getQuantity())));
-    }
-
-//    @Test
-//    void whenPATCHIsCalledToIncrementGreatherThanMaxThenBadRequestStatusIsReturned() throws Exception {
-//        QuantityDTO quantityDTO = QuantityDTO.builder()
-//                .quantity(30)
-//                .build();
-//
-//        EquipmentDTO beerDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
-//        beerDTO.setQuantity(beerDTO.getQuantity() + quantityDTO.getQuantity());
-//
-//        when(equipmentService.increment(VALID_BEER_ID, quantityDTO.getQuantity())).thenThrow(EquipmentsExceededException.class);
-//
-//        mockMvc.perform(patch(BEER_API_URL_PATH + "/" + VALID_BEER_ID + BEER_API_SUBPATH_INCREMENT_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .con(asJsonString(quantityDTO))).andExpect(status().isBadRequest());
-//    }
-
-//    @Test
-//    void whenPATCHIsCalledWithInvalidBeerIdToIncrementThenNotFoundStatusIsReturned() throws Exception {
-//        QuantityDTO quantityDTO = QuantityDTO.builder()
-//                .quantity(30)
-//                .build();
-//
-//        when(equipmentService.increment(INVALID_BEER_ID, quantityDTO.getQuantity())).thenThrow(EquipmentNotFoundException.class);
-//        mockMvc.perform(patch(BEER_API_URL_PATH + "/" + INVALID_BEER_ID + BEER_API_SUBPATH_INCREMENT_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(quantityDTO)))
-//                .andExpect(status().isNotFound());
-//    }
-//
-//    @Test
-//    void whenPATCHIsCalledToDecrementDiscountThenOKstatusIsReturned() throws Exception {
-//        QuantityDTO quantityDTO = QuantityDTO.builder()
-//                .quantity(5)
-//                .build();
-//
-//        EquipmentDTO beerDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
-//        beerDTO.setQuantity(beerDTO.getQuantity() + quantityDTO.getQuantity());
-//
-//        when(equipmentService.decrement(VALID_BEER_ID, quantityDTO.getQuantity())).thenReturn(beerDTO);
-//
-//        mockMvc.perform(patch(BEER_API_URL_PATH + "/" + VALID_BEER_ID + BEER_API_SUBPATH_DECREMENT_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(quantityDTO))).andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name", is(beerDTO.getName())))
-//                .andExpect(jsonPath("$.brand", is(beerDTO.getBrand())))
-//                .andExpect(jsonPath("$.type", is(beerDTO.getType().toString())))
-//                .andExpect(jsonPath("$.quantity", is(beerDTO.getQuantity())));
-//    }
-//
-//    @Test
-//    void whenPATCHIsCalledToDEcrementLowerThanZeroThenBadRequestStatusIsReturned() throws Exception {
-//        QuantityDTO quantityDTO = QuantityDTO.builder()
-//                .quantity(60)
-//                .build();
-//
-//        EquipmentDTO beerDTO = EquipmentDTOBuilder.builder().build().toBeerDTO();
-//        beerDTO.setQuantity(beerDTO.getQuantity() + quantityDTO.getQuantity());
-//
-//        when(equipmentService.decrement(VALID_BEER_ID, quantityDTO.getQuantity())).thenThrow(EquipmentsExceededException.class);
-//
-//        mockMvc.perform(patch(BEER_API_URL_PATH + "/" + VALID_BEER_ID + BEER_API_SUBPATH_DECREMENT_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(quantityDTO))).andExpect(status().isBadRequest());
-//    }
-//
-//    @Test
-//    void whenPATCHIsCalledWithInvalidBeerIdToDecrementThenNotFoundStatusIsReturned() throws Exception {
-//        QuantityDTO quantityDTO = QuantityDTO.builder()
-//                .quantity(5)
-//                .build();
-//
-//        when(equipmentService.decrement(INVALID_BEER_ID, quantityDTO.getQuantity())).thenThrow(EquipmentNotFoundException.class);
-//        mockMvc.perform(patch(BEER_API_URL_PATH + "/" + INVALID_BEER_ID + BEER_API_SUBPATH_DECREMENT_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(quantityDTO)))
-//                .andExpect(status().isNotFound());
-//    }
 }

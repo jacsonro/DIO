@@ -7,13 +7,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum EquipmentType {
 
-    LAGER("Lager"),
-    MALZBIER("Malzbier"),
-    WITBIER("Witbier"),
-    WEISS("Weiss"),
-    ALE("Ale"),
-    IPA("IPA"),
-    STOUT("Stout");
+    PUMP("Pump", "14047"),
+    MOTORPUMP("Motor Pump", "14015"),
+    MOTOR("Motor", "14001"),
+    AERATOR("Aerator", "14022"),
+    GENERATOR("Generator", "14012"),
+    REDUCER("Reducer", "14043"),
+    TRANSFORMER("Transformer", "14006");
 
     private final String description;
+    private final String initialCode;
 }

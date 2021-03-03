@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class EquipmentAlreadyRegisteredException extends Exception{
 
-    public EquipmentAlreadyRegisteredException(String beerName) {
-        super(String.format("Equipment with name %s already registered in the system.", beerName));
+    public EquipmentAlreadyRegisteredException(String np) {
+        super(String.format("Equipment with NP %s already registered in the system.", np));
     }
 }

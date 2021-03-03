@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "968d1d0a-fd86-427f-a152-254a5e83f31d",
+		"name": "Equipment API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Equipments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1OTE2NzAwODgsImlhdCI6MTU5MTY1MjA4OH0.j6nd_s7VFvPVbh4abKrjeaYxgmDCxMxc0O18lPz2juONf3zvKBO7vx-w2WO2b_BJnOl5vAI_5DLg5RrgIZ5WEg"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/equipments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"equipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Equipment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"np\": \"140162831\",\n\t\"brand\": \"ABS\",\n\t\"model\": \"AFP 140-440\",\n\t\"type\": \"MOTORPUMP\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/equipments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"equipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get equipment by np",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/equipments/140152830",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"equipments",
+						"140152830"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete equipment by id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/equipments/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"equipments",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

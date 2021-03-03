@@ -11,26 +11,22 @@ public class EquipmentDTOBuilder {
     private Long id = 1L;
 
     @Builder.Default
-    private String name = "Brahma";
+    private String np = "140152830";
 
     @Builder.Default
-    private String brand = "Ambev";
+    private String brand = "FLYGT";
 
     @Builder.Default
-    private int max = 50;
+    private String model = "NP 3206";
 
     @Builder.Default
-    private int quantity = 10;
+    private EquipmentType type = EquipmentType.MOTORPUMP;
 
-    @Builder.Default
-    private EquipmentType type = EquipmentType.LAGER;
-
-    public EquipmentDTO toBeerDTO() {
+    public EquipmentDTO toEquipmentDTO() {
         return new EquipmentDTO(id,
-                name,
+                np,
                 brand,
-                max,
-                quantity,
+                model,
                 type);
     }
 }

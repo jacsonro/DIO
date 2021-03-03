@@ -10,18 +10,18 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static springfox.documentation.builders.RequestHandlerSelectors.*;
+import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
     private static final String BASE_PACKAGE = "one.digitalinnovation.equipments.controller";
-    private static final String API_TITLE = "Equipment Stock API";
-    private static final String API_DESCRIPTION = "REST API for beer stock management";
-    private static final String CONTACT_NAME = "Rodrigo Peleias";
-    private static final String CONTACT_GITHUB = "https://gtihub.com/rpeleias";
-    private static final String CONTACT_EMAIL = "rodrigo.peleis@gmail.com";
+    private static final String API_TITLE = "Equipments API";
+    private static final String API_DESCRIPTION = "REST API for equipments management";
+    private static final String CONTACT_NAME = "Jacson Ramos By Rodrigo Peleias (https://gtihub.com/rpeleias)";
+    private static final String CONTACT_GITHUB = "https://bitbucket.org/jacsonro";
+    private static final String CONTACT_EMAIL = "jacsonro@gmail.com";
 
     @Bean
     public Docket api() {

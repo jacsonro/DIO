@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class EquipmentNotFoundException extends Exception {
 
-    public EquipmentNotFoundException(String beerName) {
-        super(String.format("Equipment with name %s not found in the system.", beerName));
+    public EquipmentNotFoundException(String np) {
+        super(String.format("Equipment with name %s not found in the system.", np));
     }
 
     public EquipmentNotFoundException(Long id) {

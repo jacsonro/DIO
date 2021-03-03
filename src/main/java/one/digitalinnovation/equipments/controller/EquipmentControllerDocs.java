@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import one.digitalinnovation.equipments.dto.EquipmentDTO;
 import one.digitalinnovation.equipments.exception.EquipmentAlreadyRegisteredException;
+import one.digitalinnovation.equipments.exception.EquipmentCodeException;
 import one.digitalinnovation.equipments.exception.EquipmentNotFoundException;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -19,24 +20,24 @@ public interface EquipmentControllerDocs {
             @ApiResponse(code = 201, message = "Success beer creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
     })
-    EquipmentDTO createBeer(EquipmentDTO equipmentDTO) throws EquipmentAlreadyRegisteredException;
+    EquipmentDTO createEquipment(EquipmentDTO equipmentDTO) throws EquipmentAlreadyRegisteredException, EquipmentCodeException;
 
-    @ApiOperation(value = "Returns beer found by a given name")
+    @ApiOperation(value = "Returns Equipment found by a given name")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success beer found in the system"),
+            @ApiResponse(code = 200, message = "Success Equipment found in the system"),
             @ApiResponse(code = 404, message = "Equipment with given name not found.")
     })
-    EquipmentDTO findByName(@PathVariable String name) throws EquipmentNotFoundException;
+    EquipmentDTO findByNp(@PathVariable String np) throws EquipmentNotFoundException;
 
-    @ApiOperation(value = "Returns a list of all beers registered in the system")
+    @ApiOperation(value = "Returns a list of all Equipments registered in the system")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "List of all beers registered in the system"),
+            @ApiResponse(code = 200, message = "List of all Equipments registered in the system"),
     })
-    List<EquipmentDTO> listBeers();
+    List<EquipmentDTO> listEquipments();
 
-    @ApiOperation(value = "Delete a beer found by a given valid Id")
+    @ApiOperation(value = "Delete a Equipment found by a given valid Id")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Success beer deleted in the system"),
+            @ApiResponse(code = 204, message = "Success Equipment deleted in the system"),
             @ApiResponse(code = 404, message = "Equipment with given id not found.")
     })
     void deleteById(@PathVariable Long id) throws EquipmentNotFoundException;

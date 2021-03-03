@@ -21,20 +21,16 @@ public class EquipmentDTO {
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 200)
-    private String name;
+    @Size(min = 9, max = 9)
+    private String np;
 
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = 3, max = 200)
     private String brand;
 
     @NotNull
-    @Max(500)
-    private Integer max;
-
-    @NotNull
-    @Max(100)
-    private Integer quantity;
+    @Size(min = 3, max = 200)
+    private String model;
 
     @Enumerated(EnumType.STRING)
     @NotNull
